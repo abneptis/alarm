@@ -28,7 +28,8 @@ $ ./alarm -stdout=memory -write-log=onerror bash -c "echo Hello world; false"
 > Hello world
 
 
-./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" bash -c "echo Hello world; true" 
+$ ./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" bash -c "echo Hello world; true" 
+>
 
 $ time ./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" sleep 45 ; echo $?
 > Pid 32438 : alive after 5.000000 seconds
