@@ -1,0 +1,65 @@
+Alarm
+=====
+  A simple wrapper for cronjobs & scripts.
+
+  Homepage: http://www.github.com/abneptis/alarm
+
+
+Admin Synopsis
+--------------
+$ time ./alarm -time="10" sleep 5; echo $?
+> real	0m5.013s
+> user	0m0.016s
+> sys	0m0.000s
+> 0
+
+james@micr0nix:~/Tools/alarm$ time ./alarm -time="5" sleep 10; echo $?
+> real	0m5.025s
+> user	0m0.012s
+> sys	0m0.004s
+> 255
+
+
+(Advanced) admin synopsis
+-------------------------
+$ ./alarm -stdout=memory -write-log=onerror bash -c "echo Hello world; true"
+>
+$ ./alarm -stdout=memory -write-log=onerror bash -c "echo Hello world; false"
+> Hello world
+
+
+./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" bash -c "echo Hello world; true" 
+
+$ time ./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" sleep 45 ; echo $?
+> Pid 32438 : alive after 5.000000 seconds
+> Pid 32438 : alive after 10.000000 seconds
+> 
+> real	0m15.044s
+> user	0m0.024s
+> sys	0m0.000s
+> 255
+
+
+Description
+===========
+
+  Alarm is a simple program designed to make running (and timing out) cronjobs easier.
+
+  - -stdout/-stderr can be used to redirect named to a file (possibly the same)
+   - if 'memory' is used for either, a memory buffer will be created (-mem KB in size) to collect output.
+  - stdin can be explicitly closed (instead of passed)  by using -close-stdin (this actually opens /dev/null).
+  - -write-log=[onerror,always] can be used to control displaying the memory buffer afterwards; Currently
+    it won't do anything if you've redirected to a file.
+  - time is a series of one or more comma separated timespecs (seconds:signal pairs), eg:
+    - "30:0" : Indicates that after 30 seconds, print a message if the process is still running (don't kill)
+    - "30" : Indicates that after 30 seconds, send the default signal (15) 
+    - "5:0,10:15,30:9" : Print a message after 5, kill -15 after 10, kill -9 after 30.
+
+Bugs
+====
+
+  Probably numerous.  Please file an issue in the project tracker on github!
+
+License
+=======
+  See LICENSE (2 clause BSD)
