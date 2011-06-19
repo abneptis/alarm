@@ -56,6 +56,13 @@ Description
     - "30" : Indicates that after 30 seconds, send the default signal (15) 
     - "5:0,10:15,30:9" : Print a message after 5, kill -15 after 10, kill -9 after 30.
 
+    It can also be used simply as an "output filter" -- if you set time="", then all timers/warnings
+  are disabled, but the functionality from -write-log is still available, allowing you to have
+  VERY clean scripts
+
+  The default mode is to use "memory" for both out and error,  and "write-log=onerror"; If you
+ wish to enable "pass-through" mode of output, you can set -stdout="" and -stderr="". 
+
 Bugs
 ====
 

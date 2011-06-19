@@ -32,14 +32,14 @@ const (
 
 
 var flag_close_stdin *bool = flag.Bool("close-stdin",false,"Close stdin")
-var flag_timeout *string   = flag.String("time","30:0","List of timeouts 'secs[:signal][,...]; default signal is 15, 0 just prints")
+var flag_timeout *string   = flag.String("time","","List of timeouts 'secs[:signal][,...]; default signal is 15, 0 just prints")
 var flag_arg0 *string       = flag.String("arg0","","arg0 to use (default=CMD)")
 var flag_cwd *string        = flag.String("cwd",os.Getenv("PWD"),"Working directory (default=CWD)")
 var flag_verbose *bool      = flag.Bool("verbose",false, "Verbose logging")
 var flag_force_timer *bool  = flag.Bool("force-short-timers",false, "Don't auto-adjust values < 1 second")
 
-var flag_log_stdout *string = flag.String("stdout","", "File to log stdout to")
-var flag_log_stderr *string = flag.String("stderr","", "File to log stderr to")
+var flag_log_stdout *string = flag.String("stdout","memory", "File to log stdout to")
+var flag_log_stderr *string = flag.String("stderr","memory", "File to log stderr to")
 
 var flag_buff_size  *int    = flag.Int("mem", 8, "Amount of memory to use for 'memory' outputs (KB)")
 
@@ -235,6 +235,9 @@ func main(){
   timers := []*Timer{}
   timer_strings := strings.Split(*flag_timeout,",",-1)
   for ti := range(timer_strings) {
+    if timer_strings[ti] == "" {
+      continue
+    }
     t, err := NewTimerString(timer_strings[ti])
     if err != nil {
       fmt.Printf("Couldn't parse timer string '%s': %v\n", timer_strings[ti], err)
