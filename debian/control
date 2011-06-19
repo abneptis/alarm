@@ -1,0 +1,13 @@
+Source: alarm
+Section: admin
+Priority: extra
+Maintainer: James D. Nurmi <packaging@abneptis.com>
+Build-Depends: debhelper (>= 7.0.50~), golang-weekly-go
+Standards-Version: 3.9.1
+Homepage: http://github.com/abneptis/alarm
+
+Package: alarm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A script-runner with a number of cron/script friendly features
+  TODO

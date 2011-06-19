@@ -1,0 +1,13 @@
+alarm (0.0.0.1) unstable; urgency=low
+
+  * Actually parse the empty time a bit.
+  * Munge the defaults to be more useful in scripts
+  * Adds to readme
+
+ -- James D. Nurmi <packaging@abneptis.com>  Sat, 18 Jun 2011 18:58:35 -0700
+
+alarm (0.0.0.0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- James D. Nurmi <packaging@abneptis.com>  Sat, 18 Jun 2011 17:20:59 -0700

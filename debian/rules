@@ -1,0 +1,24 @@
+#!/usr/bin/gomake -f
+
+# strip breaks go
+export DEB_BUILD_OPTIONS=nostrip
+
+ifeq ($(DEB_BUILD_ARCH),i386)
+export GOARCH=386
+else
+export GOARCH=$(DEB_BUILD_ARCH)
+endif
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+%:
+	dh $@ 
+
+override_dh_auto_install:
+	mkdir -p debian/alarm/$(GOROOT)
+	ln -s $(GOROOT)/src debian/alarm/$(GOROOT)/
+	gomake install GOROOT=debian/alarm/$(GOROOT)/ GOBIN=debian/alarm/usr/bin/
+	rm -f debian/alarm/$(GOROOT)/src
+	dh_install
+

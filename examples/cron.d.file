@@ -1,0 +1,3 @@
+CRONMAIL=myuser
+# This job produces a lot of output, so we pre-allocate the buffer
+0-59/15 * * * *   alarm -squelch -mem=64 /home/myuser/somejob

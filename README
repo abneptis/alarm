@@ -22,16 +22,16 @@ james@micr0nix:~/Tools/alarm$ time ./alarm -time="5" sleep 10; echo $?
 
 (Advanced) admin synopsis
 -------------------------
-$ ./alarm -stdout=memory -write-log=onerror bash -c "echo Hello world; true"
+$ ./alarm -squelch bash -c "echo Hello world; true"
 >
-$ ./alarm -stdout=memory -write-log=onerror bash -c "echo Hello world; false"
+$ ./alarm -squelch bash -c "echo Hello world; false"
 > Hello world
 
 
-$ ./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" bash -c "echo Hello world; true" 
+$ ./alarm -squelch -time "5:0,10:0,15,30:9" bash -c "echo Hello world; true" 
 >
 
-$ time ./alarm -stdout=memory -stderr=memory -write-log=onerror -time "5:0,10:0,15,30:9" sleep 45 ; echo $?
+$ time ./alarm -squelch -time "5:0,10:0,15,30:9" sleep 45 ; echo $?
 > Pid 32438 : alive after 5.000000 seconds
 > Pid 32438 : alive after 10.000000 seconds
 > 
@@ -49,7 +49,7 @@ Description
   - -stdout/-stderr can be used to redirect named to a file (possibly the same)
    - if 'memory' is used for either, a memory buffer will be created (-mem KB in size) to collect output.
   - stdin can be explicitly closed (instead of passed)  by using -close-stdin (this actually opens /dev/null).
-  - -write-log=[onerror,always] can be used to control displaying the memory buffer afterwards; Currently
+  - -dump=[onerror,always] can be used to control displaying the memory buffer afterwards; Currently
     it won't do anything if you've redirected to a file.
   - time is a series of one or more comma separated timespecs (seconds:signal pairs), eg:
     - "30:0" : Indicates that after 30 seconds, print a message if the process is still running (don't kill)
@@ -60,8 +60,10 @@ Description
   are disabled, but the functionality from -write-log is still available, allowing you to have
   VERY clean scripts
 
-  The default mode is to use "memory" for both out and error,  and "write-log=onerror"; If you
- wish to enable "pass-through" mode of output, you can set -stdout="" and -stderr="". 
+  The default mode is to pass-through stdin/out/err with no timers -- effectively, run the program.  
+ To use alarms 'squelching' properties without any timers, you can use '-squelch' which implies 
+ (-dump=onerr -stdout=memory -stderr=memory).
+
 
 Bugs
 ====

@@ -38,12 +38,14 @@ var flag_cwd *string        = flag.String("cwd",os.Getenv("PWD"),"Working direct
 var flag_verbose *bool      = flag.Bool("verbose",false, "Verbose logging")
 var flag_force_timer *bool  = flag.Bool("force-short-timers",false, "Don't auto-adjust values < 1 second")
 
-var flag_log_stdout *string = flag.String("stdout","memory", "File to log stdout to")
-var flag_log_stderr *string = flag.String("stderr","memory", "File to log stderr to")
+var flag_log_stdout *string = flag.String("stdout","", "File to log stdout to")
+var flag_log_stderr *string = flag.String("stderr","", "File to log stderr to")
 
 var flag_buff_size  *int    = flag.Int("mem", 8, "Amount of memory to use for 'memory' outputs (KB)")
 
-var flag_dump_log    *string = flag.String("write-log","onerror", "Dump the logs when (always, onerror, onsuccess)")
+var flag_dump_log    *string = flag.String("dump","onerror", "Dump the logs when (always, onerror, onsuccess)")
+
+var flag_squelch     *bool  = flag.Bool("squelch",false, "Implies -stdout=memory -stderr=memory -dump=onerror")
 
 // TODO: This leaks descriptors on an error;
 // since our usage dies on an error, we don't really care.
@@ -195,6 +197,8 @@ func main(){
     fmt.Printf("USAGE: alarm [--alarmopts] CMD cmdflags\n")
     os.Exit(die_USAGE)
   }
+  if *flag_squelch && *flag_log_stdout == "" { *flag_log_stdout = "memory" }
+  if *flag_squelch && *flag_log_stderr == "" { *flag_log_stderr = "memory" }
   args := flag.Args()
   if *flag_arg0 == "" {
     *flag_arg0 = flag.Arg(0)
@@ -297,22 +301,6 @@ func main(){
       fmt.Printf("\n----------\nLogs complete: %v", err)
     }
   }
-// Commented out until I can figure out a way to not accidentally remove /dev/null...
-/*
-  if ( *flag_drop_log == "onsuccess" && wmsg.ExitStatus() == 0 ) ||
-     ( *flag_drop_log == "onerror" && wmsg.ExitStatus() != 0 ) {
-    if *flag_log_stdout != "" && *flag_log_stdout != "memory" {
-      err = os.Remove(*flag_log_stdout)
-    }
-    if *flag_log_stderr != "" && *flag_log_stderr != "memory" {
-      err = os.Remove(*flag_log_stderr)
-    }
-    if err != nil {
-      fmt.Printf("Couldn't drop log: %v\n", err)
-      os.Exit(die_FILEERR)
-    }
-  }
-*/
   // We're ok, but we'd like to bubble up the status
   os.Exit(wmsg.ExitStatus())
 }
