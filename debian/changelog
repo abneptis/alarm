@@ -1,3 +1,10 @@
+alarm (0.0.0.2) unstable; urgency=low
+
+  * Add a -squelch (restore previous defaults, except -time="" remains)
+  * Add both scripting and cron examples
+
+ -- James D. Nurmi <packaging@abneptis.com>  Sat, 18 Jun 2011 18:58:35 -0700
+
 alarm (0.0.0.1) unstable; urgency=low
 
   * Actually parse the empty time a bit.
