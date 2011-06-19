@@ -1,9 +1,7 @@
 alarm (0.0.0.2) unstable; urgency=low
-
-  * Restore defaults (ex. -time)
-  * Add -squelch
-  * Add examples
-
+ * Restore defaults (ex. -time)
+ * Add -squelch
+ * Add examples
  -- James D. Nurmi <packaging@abneptis.com>  Sat, 18 Jun 2011 20:20:25 -0700
 
 alarm (0.0.0.1) unstable; urgency=low
